@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyPetShop.Areas.Identity.Data;
 using MyPetShop.Data;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MyPetShopDbContextConnection") ?? throw new InvalidOperationException("Connection string 'MyPetShopDbContextConnection' not found.");
 
@@ -13,6 +14,8 @@ builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireCo
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<PetDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PetDbContext") ?? throw new InvalidOperationException("Connection string 'PetDbContext' not found.")));
 
 var app = builder.Build();
 
